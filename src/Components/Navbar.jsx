@@ -1,40 +1,63 @@
-import React from "react";
-import { FaMoon } from "react-icons/fa";
-import { FaSun } from "react-icons/fa6";
+import React, { useState } from "react";
+import { FaBars, FaCloud, FaTimes, FaHome, FaLaptopCode, FaProjectDiagram, FaEnvelope } from "react-icons/fa";
+import Hero from "../pages/Hero";
 
-const Navbar = ({ theme, setTheme }) => {
+const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const Links = [
-    { name: "Home", links: "/" },
-    { name: "Education", links: "/" },
-    { name: "Projects", links: "/" },
-    { name: "About", links: "/" },
+    { name: "Home", links: "#home", icon: <FaHome /> },
+    { name: "Skills", links: "#skills", icon: <FaLaptopCode /> },
+    { name: "Projects", links: "#project", icon: <FaProjectDiagram /> },
+    { name: "Contact", links: "#contact", icon: <FaEnvelope /> },
   ];
 
-  const toggle_mode = () => {
-    theme === 'light' ? setTheme('dark') : setTheme('light');
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
   };
 
   return (
-    <div className={`shadow-md w-full fixed top-0 left-0 ${theme === 'light' ? 'bg-black' : 'bg-white'}`}>
-      <div className={`md:flex items-center justify-between py-4 md:px-10 ${theme === 'light' ? 'bg-black' : 'bg-white'}`}>
-        <div className={`font-bold text-3xl cursor-pointer flex items-center font-[Poppins] ${theme === 'light' ? 'text-white' : 'text-gray-800'}`}>
-          <span className="text-[#d11953] mx-1">Manik</span> Chandra
-          <span className="text-[#d11953] mx-1">Dutt</span>
-        </div>
-        <ul className="md:flex md:items-center">
+    <div
+      className="shadow-lg w-full top-0 left-0 z-50 bg-white bg-opacity-10 text-white border-b-white border-b-4 transition-all duration-200 ease-in-out"
+      style={{ zIndex: 1000 }}
+    >
+      <div className="flex items-center justify-between py-6 px-4 md:px-12">
+        {/* Logo */}
+        <Hero/>
+
+        {/* Links - Mobile & Desktop */}
+        <ul
+          className={`md:flex md:items-center fixed md:static top-0 left-0 w-full h-full md:h-auto bg-bg-color md:bg-transparent flex-col md:flex-row items-center justify-center transition-transform duration-500 ease-in-out ${
+            menuOpen ? "translate-x-1/2" : "translate-x-full"
+          } md:translate-x-0 md:flex-row md:w-auto z-40`}
+        >
           {Links.map((link) => (
-            <li key={link.name} className="md:ml-8 text-xl">
+            <li
+              key={link.name}
+              className="md:ml-8 ml-8 text-2xl my-7 md:my-0 transition-all duration-300 ease-in-out flex items-center space-x-2"
+            >
               <a
                 href={link.links}
-                className={`hover:text-gray-500 duration-50 ${theme === 'light' ? 'text-white' : 'text-gray-800'}`}
+                onClick={closeMenu}
+                className="text-white hover:text-text-color  font-semibold transition-all duration-150 ease-in-out relative after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-gradient-to-r from-pink-700 to-blue-700 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full flex items-center space-x-2"
               >
-                {link.name}
+                {link.icon}
+                <span>{link.name}</span>
               </a>
             </li>
           ))}
         </ul>
-        <div onClick={toggle_mode} className="cursor-pointer text-2xl">
-          {theme === 'light' ? <FaSun className="w-6 h-6 text-white" /> : <FaMoon className="w-6 h-6 text-black" />}
+
+        {/* Hamburger Menu - Mobile */}
+        <div
+          className="text-2xl md:hidden cursor-pointer z-50"
+          onClick={toggleMenu}
+        >
+          {menuOpen ? <FaTimes className="text-white" /> : <FaBars className="text-white" />}
         </div>
       </div>
     </div>
